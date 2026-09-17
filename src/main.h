@@ -1,7 +1,6 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include <stdio.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -22,13 +21,16 @@ typedef double f64;
 
 #define RAND_SEED 107
 
-#define TEMPO_FUNC(func) do { \
-    clock_t inicio = clock(); \
-    func; \
-    clock_t fim = clock(); \
-    double tempo = (double)(fim - inicio) / CLOCKS_PER_SEC; \
-    printf("Tempo para executar [%s]: %.8f\n", #func, tempo); \
-} while(0)
+#define TEMPO_FUNC(func)                                                       \
+    do {                                                                       \
+        clock_t inicio = clock();                                              \
+        func;                                                                  \
+        clock_t fim = clock();                                                 \
+        double tempo = (double)(fim - inicio) / CLOCKS_PER_SEC;                \
+        printf("Tempo para executar~\n[%s]:\n->%.8f (seg)\n", #func, tempo);             \
+    } while (0)
+
+#define LINE(n) for (int i = 0; i < n; i++) { printf("-"); } printf("\n")
 
 typedef struct {
     u32 pos;
@@ -38,5 +40,3 @@ typedef struct {
 } BuscaResultado;
 
 #endif
-
-

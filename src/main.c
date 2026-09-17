@@ -20,7 +20,6 @@ tempo de execucao. Apresentar evidencia de ordenacao (print vetor)
 
 static void print_resultado(BuscaResultado r) {
     bool successo = (r.pos != -1 && r.val != -1);
-    printf("------------------------------\n");
     printf("Resultado da busca: %s\n", successo ? "SUCESSO" : "FALHA");
     if (!successo) {
         return;
@@ -33,43 +32,56 @@ static void print_resultado(BuscaResultado r) {
     printf("\n");
 }
 
+static void exec_testes(u32 tamanho, u32 alvo_index, u16 n_testes, bool print_v) {
+    u32 *vetor;
+    vetor = criar_vetor_aleatorio(tamanho);
+    u32 alvo = vetor[alvo_index]; 
+
+    LINE(50);
+    for (int i = 0; i < n_testes; i++) {
+        printf("Teste numero: (%d)\n", i+1);
+        TEMPO_FUNC(insertion_sort(vetor, tamanho));
+
+        if (print_v)
+            print_vetor(vetor, tamanho, 10);
+
+        BuscaResultado resultado_linear;
+        BuscaResultado resultado_binario;
+
+        TEMPO_FUNC(resultado_linear = busca_linear(vetor, tamanho, alvo));
+        print_resultado(resultado_linear);
+
+        TEMPO_FUNC(resultado_binario = busca_binaria(vetor, tamanho, alvo));
+        print_resultado(resultado_binario);
+
+        LINE(50);
+    }
+    printf("> Testes finalizados.\n");
+
+    free(vetor);
+}
+
 int main(int argc, char **argv) {
 
-    u32 tamanho, alvo_a;
-    u32 *vetor_a;
+    const u32 testes = 4;
+    u32 tamanho, alvo_index;
     if (argc >= 2) {
         tamanho = atol(argv[1]);
-        vetor_a = criar_vetor_aleatorio(tamanho);
-       
-        srand(time(NULL)); // Usando seed de tempo so pra escolher o alvo
-        alvo_a = vetor_a[rand() % tamanho]; // ultimo elemento;
-        if (argc >= 3) {
-            alvo_a = atol(argv[2]); // ultimo elemento;
 
+        srand(time(NULL)); // Usando seed de tempo so pra escolher o alvo
+        alvo_index = rand() % tamanho; // ultimo elemento;
+        if (argc >= 3) {
+            alvo_index = atol(argv[2]); // ultimo elemento;
         }
 
+        exec_testes(tamanho, alvo_index, testes, true);
 
     } else {
-        tamanho = 100000;
-        vetor_a = criar_vetor_aleatorio(tamanho);
-        
+        tamanho = 1000;
+
         srand(time(NULL)); // Usando seed de tempo so pra escolher o alvo
-        alvo_a = vetor_a[rand() % tamanho]; // ultimo elemento;
+        exec_testes(tamanho, (rand() % tamanho), testes, true);
     }
 
-    TEMPO_FUNC(insertion_sort(vetor_a, tamanho));
-
-    print_vetor(vetor_a, tamanho, 10);
-
-    BuscaResultado resultado_linear;
-    BuscaResultado resultado_binario;
-
-    TEMPO_FUNC(resultado_linear = busca_linear(vetor_a, tamanho, alvo_a));
-    print_resultado(resultado_linear);
-
-    TEMPO_FUNC(resultado_binario = busca_binaria(vetor_a, tamanho, alvo_a));
-    print_resultado(resultado_binario);
-
-    free(vetor_a);
     return 0;
 }
