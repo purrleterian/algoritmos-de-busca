@@ -19,8 +19,8 @@ tempo de execucao. Apresentar evidencia de ordenacao (print vetor)
 #include "vetores.h"
 
 static void print_resultado(BuscaResultado r) {
-    bool successo = (r.pos > 0);
-    printf("----------------------\n");
+    bool successo = (r.pos != -1 && r.val != -1);
+    printf("------------------------------\n");
     printf("Resultado da busca: %s\n", successo ? "SUCESSO" : "FALHA");
     if (!successo) {
         return;
@@ -38,29 +38,35 @@ int main(int argc, char **argv) {
     srand(time(NULL)); // Usando seed de tempo so pra escolher o alvo
     u32 tamanho, alvo_a;
     u32 *vetor_a;
-    if (argc != 3) {
+    if (argc >= 2) {
+        printf("Got here\n");
+        tamanho = atol(argv[1]);
+        vetor_a = criar_vetor_aleatorio(tamanho);
+        alvo_a = vetor_a[rand() % tamanho]; // ultimo elemento;
+        if (argc >= 3) {
+            alvo_a = atol(argv[2]); // ultimo elemento;
 
+        }
+
+
+    } else {
         tamanho = 100000;
         vetor_a = criar_vetor_aleatorio(tamanho);
         alvo_a = vetor_a[rand() % tamanho]; // ultimo elemento;
-
-    } else {
-        tamanho = atol(argv[1]);
-        vetor_a = criar_vetor_aleatorio(tamanho);
-        alvo_a = atol(argv[2]);// ultimo elemento;
     }
 
     TEMPO_FUNC(insertion_sort(vetor_a, tamanho));
 
-    // print_vetor(vetor_a, tamanho_a);
+    print_vetor(vetor_a, tamanho);
 
-    BuscaResultado resultado;
+    BuscaResultado resultado_linear;
+    BuscaResultado resultado_binario;
 
-    TEMPO_FUNC(resultado = busca_linear(vetor_a, tamanho, alvo_a));
-    print_resultado(resultado);
+    TEMPO_FUNC(resultado_linear = busca_linear(vetor_a, tamanho, alvo_a));
+    print_resultado(resultado_linear);
 
-    TEMPO_FUNC(resultado = busca_binaria(vetor_a, tamanho, alvo_a));
-    print_resultado(resultado);
+    TEMPO_FUNC(resultado_binario = busca_binaria(vetor_a, tamanho, alvo_a));
+    print_resultado(resultado_binario);
 
     free(vetor_a);
     return 0;
