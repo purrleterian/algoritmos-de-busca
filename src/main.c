@@ -35,6 +35,7 @@ static void print_resultado(BuscaResultado r) {
 
 int main(int argc, char **argv) {
 
+    srand(time(NULL)); // Usando seed de tempo so pra escolher o alvo
     u32 tamanho, alvo_a;
     u32 *vetor_a;
     if (argc != 3) {
