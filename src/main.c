@@ -38,7 +38,6 @@ int main(int argc, char **argv) {
     u32 tamanho, alvo_a;
     u32 *vetor_a;
     if (argc >= 2) {
-        printf("Got here\n");
         tamanho = atol(argv[1]);
         vetor_a = criar_vetor_aleatorio(tamanho);
        
