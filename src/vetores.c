@@ -1,6 +1,5 @@
 #include "vetores.h"
 
-
 u32 *criar_vetor_aleatorio(u32 tamanho) {
     srand(RAND_SEED);
     u32 max = INT32_MAX;
@@ -13,13 +12,13 @@ u32 *criar_vetor_aleatorio(u32 tamanho) {
     return v;
 }
 
-
-void print_vetor(u32 *valores, u32 tamanho) {
+void print_vetor(u32 *valores, u32 tamanho, u32 display_t) {
     for (u32 i = 0; i < tamanho; i++) {
-        printf("(%d) %d\n", i+1, valores[i]);
+        printf("(%d) %d\n", i, valores[i]);
+        if (i == display_t) {
+            printf("[...]\n");
+            break;
+        }
     }
     printf("\n");
-
 }
-
-

@@ -60,7 +60,7 @@ int main(int argc, char **argv) {
 
     TEMPO_FUNC(insertion_sort(vetor_a, tamanho));
 
-    print_vetor(vetor_a, tamanho);
+    print_vetor(vetor_a, tamanho, 10);
 
     BuscaResultado resultado_linear;
     BuscaResultado resultado_binario;
