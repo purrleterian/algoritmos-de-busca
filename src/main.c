@@ -35,13 +35,14 @@ static void print_resultado(BuscaResultado r) {
 
 int main(int argc, char **argv) {
 
-    srand(time(NULL)); // Usando seed de tempo so pra escolher o alvo
     u32 tamanho, alvo_a;
     u32 *vetor_a;
     if (argc >= 2) {
         printf("Got here\n");
         tamanho = atol(argv[1]);
         vetor_a = criar_vetor_aleatorio(tamanho);
+       
+        srand(time(NULL)); // Usando seed de tempo so pra escolher o alvo
         alvo_a = vetor_a[rand() % tamanho]; // ultimo elemento;
         if (argc >= 3) {
             alvo_a = atol(argv[2]); // ultimo elemento;
@@ -52,6 +53,8 @@ int main(int argc, char **argv) {
     } else {
         tamanho = 100000;
         vetor_a = criar_vetor_aleatorio(tamanho);
+        
+        srand(time(NULL)); // Usando seed de tempo so pra escolher o alvo
         alvo_a = vetor_a[rand() % tamanho]; // ultimo elemento;
     }
 
