@@ -21,13 +21,27 @@ typedef double f64;
 
 #define RAND_SEED 107
 
-#define TEMPO_FUNC(func, arr, n)                                               \
+typedef struct {
+    const char *label;
+    const char *func_nome;
+    double tempo;
+    u16 count;
+} Medida;
+
+#define MAX_TESTS 128
+
+
+#define TEMPO_FUNC(label_, func)                                               \
     do {                                                                       \
         clock_t inicio = clock();                                              \
         func;                                                                  \
         clock_t fim = clock();                                                 \
         double tempo = (double)(fim - inicio) / CLOCKS_PER_SEC;                \
-        arr[n] = tempo;                                                    \
+        medidas[n_medidas].label = label_;                                     \
+        medidas[n_medidas].func_nome = #func;                                  \
+        medidas[n_medidas].tempo = tempo;                                      \
+        medidas[n_medidas].count = n_medidas;                                  \
+        n_medidas++;                                                           \
         printf("Tempo para executar~\n[%s]:\n->%.8f (seg)\n\n", #func, tempo); \
     } while (0)
 
