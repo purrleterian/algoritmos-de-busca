@@ -21,6 +21,22 @@ tempo de execucao. Apresentar evidencia de ordenacao (print vetor)
 static Medida medidas[MAX_TESTS];
 static int n_medidas = 0;
 
+static void create_csv(const char *filename, const Medida medidas[MAX_TESTS]) {
+    FILE *fp = fopen(filename, "w");
+    if (fp == NULL) {
+        fprintf(stderr, "Error opening file: %s\n", filename);
+        return;
+    }
+
+    fprintf(fp, "ID,NOME,TEMPO (SEG),MEDIA\n");
+    for (int i = 0; i < n_medidas; i++) {
+        fprintf(fp, "%d,%s,%.8f,%.8f\n", medidas[i].count, medidas[i].label,
+                medidas[i].tempo, 0.0f);
+    }
+
+    fclose(fp);
+    printf("CSV Created.\n");
+}
 
 static void print_resultado(BuscaResultado r) {
     bool successo = (r.pos != -1 && r.val != -1);
@@ -51,13 +67,18 @@ static void exec_testes(u32 tamanho, u32 alvo_index, u16 n_testes,
             print_vetor(vetor, tamanho, 10);
 
         BuscaResultado resultado_linear;
-        BuscaResultado resultado_binario;
 
         printf("Teste numero: (%d)\n", i + 1);
         TEMPO_FUNC("Busca linear",
                    resultado_linear = busca_linear(vetor, tamanho, alvo));
         print_resultado(resultado_linear);
+    }
 
+    for (int i = 0; i < n_testes; i++) {
+        if (print_v)
+            print_vetor(vetor, tamanho, 10);
+
+        BuscaResultado resultado_binario;
         TEMPO_FUNC("Busca Binaria",
                    resultado_binario = busca_binaria(vetor, tamanho, alvo));
         print_resultado(resultado_binario);
@@ -71,7 +92,7 @@ static void exec_testes(u32 tamanho, u32 alvo_index, u16 n_testes,
 
 int main(int argc, char **argv) {
 
-    const u32 testes = 12;
+    const u32 testes = 5;
     u32 tamanho, alvo_index;
     if (argc >= 2) {
         tamanho = atol(argv[1]);
@@ -91,11 +112,7 @@ int main(int argc, char **argv) {
         exec_testes(tamanho, (rand() % tamanho), testes, true);
     }
 
-    for (int i = 0; i < MAX_TESTS; i++) {
-        if (medidas[i].label == NULL) break;
-        printf("(%d) / %s / %.7f\n", medidas[i].count, medidas[i].label,
-               medidas[i].tempo);
-    }
+    create_csv("medidas_alg.csv", medidas);
 
     return 0;
 }
