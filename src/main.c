@@ -18,6 +18,11 @@ tempo de execucao. Apresentar evidencia de ordenacao (print vetor)
 #include "ordenacao.h"
 #include "vetores.h"
 
+#define N_TESTS 12
+
+static u16 tests_completed;
+static double time_tests[N_TESTS + 1];
+
 static void print_resultado(BuscaResultado r) {
     bool successo = (r.pos != -1 && r.val != -1);
     printf("Resultado da busca: %s\n", successo ? "SUCESSO" : "FALHA");
@@ -32,15 +37,16 @@ static void print_resultado(BuscaResultado r) {
     printf("\n");
 }
 
-static void exec_testes(u32 tamanho, u32 alvo_index, u16 n_testes, bool print_v) {
+static void exec_testes(u32 tamanho, u32 alvo_index, u16 n_testes,
+                        bool print_v) {
     u32 *vetor;
     vetor = criar_vetor_aleatorio(tamanho);
-    u32 alvo = vetor[alvo_index]; 
+    u32 alvo = vetor[alvo_index];
 
+    printf("Ordenando lista...\n");
+    TEMPO_FUNC(insertion_sort(vetor, tamanho), time_tests, 0);
     LINE(50);
     for (int i = 0; i < n_testes; i++) {
-        printf("Teste numero: (%d)\n", i+1);
-        TEMPO_FUNC(insertion_sort(vetor, tamanho));
 
         if (print_v)
             print_vetor(vetor, tamanho, 10);
@@ -48,22 +54,22 @@ static void exec_testes(u32 tamanho, u32 alvo_index, u16 n_testes, bool print_v)
         BuscaResultado resultado_linear;
         BuscaResultado resultado_binario;
 
-        TEMPO_FUNC(resultado_linear = busca_linear(vetor, tamanho, alvo));
-        print_resultado(resultado_linear);
+        printf("Teste numero: (%d)\n", i + 1);
+        TEMPO_FUNC(resultado_linear = busca_linear(vetor, tamanho, alvo), time_tests, i+1);
+        // print_resultado(resultado_linear);
 
-        TEMPO_FUNC(resultado_binario = busca_binaria(vetor, tamanho, alvo));
-        print_resultado(resultado_binario);
+        TEMPO_FUNC(resultado_binario = busca_binaria(vetor, tamanho, alvo), time_tests, i+1);
+        // print_resultado(resultado_binario);
 
         LINE(50);
     }
-    printf("> Testes finalizados.\n");
+    printf(">[%d] Testes finalizados.\n", n_testes);
 
     free(vetor);
 }
 
 int main(int argc, char **argv) {
 
-    const u32 testes = 4;
     u32 tamanho, alvo_index;
     if (argc >= 2) {
         tamanho = atol(argv[1]);
@@ -74,13 +80,17 @@ int main(int argc, char **argv) {
             alvo_index = atol(argv[2]); // ultimo elemento;
         }
 
-        exec_testes(tamanho, alvo_index, testes, true);
+        exec_testes(tamanho, alvo_index, N_TESTS, false);
 
     } else {
         tamanho = 1000;
 
         srand(time(NULL)); // Usando seed de tempo so pra escolher o alvo
-        exec_testes(tamanho, (rand() % tamanho), testes, true);
+        exec_testes(tamanho, (rand() % tamanho), N_TESTS, true);
+    }
+
+    for (int i = 0; i < N_TESTS + 1; i++) {
+        printf("%.7f\n", time_tests[i]);
     }
 
     return 0;

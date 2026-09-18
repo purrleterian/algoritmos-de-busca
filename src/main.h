@@ -21,16 +21,21 @@ typedef double f64;
 
 #define RAND_SEED 107
 
-#define TEMPO_FUNC(func)                                                       \
+#define TEMPO_FUNC(func, arr, n)                                               \
     do {                                                                       \
         clock_t inicio = clock();                                              \
         func;                                                                  \
         clock_t fim = clock();                                                 \
         double tempo = (double)(fim - inicio) / CLOCKS_PER_SEC;                \
-        printf("Tempo para executar~\n[%s]:\n->%.8f (seg)\n", #func, tempo);             \
+        arr[n] = tempo;                                                    \
+        printf("Tempo para executar~\n[%s]:\n->%.8f (seg)\n\n", #func, tempo); \
     } while (0)
 
-#define LINE(n) for (int i = 0; i < n; i++) { printf("-"); } printf("\n")
+#define LINE(n)                                                                \
+    for (int i = 0; i < n; i++) {                                              \
+        printf("-");                                                           \
+    }                                                                          \
+    printf("\n")
 
 typedef struct {
     u32 pos;
