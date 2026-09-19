@@ -21,6 +21,8 @@ tempo de execucao. Apresentar evidencia de ordenacao (print vetor)
 static Medida medidas[MAX_TESTS];
 static int n_medidas = 0;
 
+// TODO: REFACTOR structure, new file
+
 static void create_csv(const char *filename, const Medida medidas[MAX_TESTS]) {
     FILE *fp = fopen(filename, "w");
     if (fp == NULL) {
@@ -59,7 +61,7 @@ static void exec_testes(u32 tamanho, u32 alvo_index, u16 n_testes,
     u32 alvo = vetor[alvo_index];
 
     printf("Ordenando lista...\n");
-    TEMPO_FUNC("Insertion Sort", insertion_sort(vetor, tamanho));
+    TEMPO_FUNC("Quick Sort", quick_sort(vetor, tamanho));
     LINE(50);
     for (int i = 0; i < n_testes; i++) {
 
@@ -103,7 +105,7 @@ int main(int argc, char **argv) {
             alvo_index = atol(argv[2]); // ultimo elemento;
         }
 
-        exec_testes(tamanho, alvo_index, testes, false);
+        exec_testes(tamanho, alvo_index, testes, true);
 
     } else {
         tamanho = 1000;
