@@ -2,6 +2,7 @@ src/*.o
 *.o
 prog
 prog.exe
+*.csv
 
 # Visual Studio Code # 
 **/.vscode/
