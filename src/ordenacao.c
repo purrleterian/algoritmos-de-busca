@@ -30,13 +30,13 @@ void insertion_sort(u32 *vetor, size_t tamanho) {
     }
 }
 
-void swap(u32 *x, u32 *y) {
+static void swap(u32 *x, u32 *y) {
     u32 temp = *x;
     *x = *y;
     *y = temp;
 }
 
-u32 partition(u32 *vetor, i32 low, i32 high) {
+static u32 partition(u32 *vetor, i32 low, i32 high) {
     u32 pivo_value = vetor[high]; 
     u32 i = low;
     for (u32 j = low; j < high; j++) {
@@ -51,7 +51,7 @@ u32 partition(u32 *vetor, i32 low, i32 high) {
 }
 
 
-void quick_sort_recurs(u32 *vetor, i32 low, i32 high) {
+static void quick_sort_recurs(u32 *vetor, i32 low, i32 high) {
     if (low < high) {
         u32 pivo_index = partition(vetor, low, high);
         quick_sort_recurs(vetor, low, pivo_index - 1);

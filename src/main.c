@@ -92,28 +92,40 @@ static void exec_testes(u32 tamanho, u32 alvo_index, u16 n_testes,
     free(vetor);
 }
 
+static u32 get_input(char *prompt, u32 def) {
+    char buffer[256];
+    printf("%s", prompt);
+    if (!fgets(buffer, sizeof(buffer), stdin))
+        return def;
+
+    buffer[strcspn(buffer, "\r\n")] = '\0';
+    if (buffer[0] == '\0')
+        return def;
+
+    char *end;
+    u64 v = strtoul(buffer, &end, 10);
+    if (end == buffer)
+        return def; // not a number
+
+    return v;
+}
+
 int main(int argc, char **argv) {
+    u32 testes, alvo_index, tamanho;
 
-    const u32 testes = 5;
-    u32 tamanho, alvo_index;
-    if (argc >= 2) {
-        tamanho = atol(argv[1]);
+    srand(time(NULL));
 
-        srand(time(NULL)); // Usando seed de tempo so pra escolher o alvo
-        alvo_index = rand() % tamanho; // ultimo elemento;
-        if (argc >= 3) {
-            alvo_index = atol(argv[2]); // ultimo elemento;
-        }
+    tamanho = get_input("Tamanho:\n>> ", 100000);
+    if (tamanho == 0)
+        tamanho = 100000;
 
-        exec_testes(tamanho, alvo_index, testes, true);
+    alvo_index = get_input("Indice do alvo:\n>> ", rand() % tamanho);
+    if (alvo_index >= tamanho)
+        alvo_index = tamanho - 1;
 
-    } else {
-        tamanho = 1000;
+    testes = get_input("Numero de testes:\n>> ", 4);
 
-        srand(time(NULL)); // Usando seed de tempo so pra escolher o alvo
-        exec_testes(tamanho, (rand() % tamanho), testes, true);
-    }
-
+    exec_testes(tamanho, alvo_index, testes, true);
     create_csv("medidas_alg.csv", medidas);
 
     return 0;
