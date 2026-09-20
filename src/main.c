@@ -32,8 +32,8 @@ static void create_csv(const char *filename, const Medida medidas[MAX_TESTS]) {
 
     fprintf(fp, "ID,NOME,TEMPO (SEG)\n");
     for (int i = 0; i < n_medidas; i++) {
-        fprintf(fp, "%d,%s,%.8f,%.8f\n", medidas[i].count, medidas[i].label,
-                medidas[i].tempo, 0.0f);
+        fprintf(fp, "%d,%s,%.8f\n", medidas[i].count, medidas[i].label,
+                medidas[i].tempo);
     }
 
     fclose(fp);
@@ -60,10 +60,10 @@ static void exec_testes(u32 tamanho, u32 alvo_index, u16 n_testes,
                         bool print_v) {
     u32 *vetor;
     vetor = criar_vetor_aleatorio(tamanho);
-    u32 alvo = vetor[alvo_index];
 
     printf("Ordenando lista...\n");
     TEMPO_FUNC("Quick Sort", quick_sort(vetor, tamanho));
+    u32 alvo = vetor[alvo_index];
     LINE(50);
     for (int i = 0; i < n_testes; i++) {
 

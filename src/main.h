@@ -56,7 +56,7 @@ typedef struct {
     u32 pos;
     u32 val;
     u32 *ender;
-    u16 n_comp;
+    u32 n_comp;
 } BuscaResultado;
 
 #endif
