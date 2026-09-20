@@ -85,6 +85,8 @@ static void exec_testes(u32 tamanho, u32 alvo_index, u16 n_testes,
             print_vetor(vetor, tamanho, 10);
 
         BuscaResultado resultado_binario;
+        
+        printf("Teste numero: (%d)\n", i + 1);
         TEMPO_REP("Busca Binaria",
                   resultado_binario = busca_binaria(vetor, tamanho, alvo));
         print_resultado(resultado_binario);
