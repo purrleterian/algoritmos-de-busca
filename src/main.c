@@ -30,21 +30,23 @@ static void create_csv(const char *filename, const Medida medidas[MAX_TESTS]) {
         return;
     }
 
-    fprintf(fp, "ID,NOME,TEMPO (SEG),MEDIA\n");
+    fprintf(fp, "ID,NOME,TEMPO (SEG)\n");
     for (int i = 0; i < n_medidas; i++) {
         fprintf(fp, "%d,%s,%.8f,%.8f\n", medidas[i].count, medidas[i].label,
                 medidas[i].tempo, 0.0f);
     }
 
     fclose(fp);
-    printf("CSV Created.\n");
+    printf("CSV file created (%s).\n", filename);
 }
 
 static void print_resultado(BuscaResultado r) {
     bool successo = (r.pos != -1 && r.val != -1);
     printf("Resultado da busca: %s\n", successo ? "SUCESSO" : "FALHA");
     if (!successo) {
-        return;
+
+        printf("\t| Alvo: [%d]\n", r.val);
+        printf("\t| Comparacoes: [%d]\n", r.n_comp);
     } else {
         printf("\t| Alvo: [%d]\n", r.val);
         printf("\t| Posicao: [%d]\n", r.pos);
@@ -87,7 +89,7 @@ static void exec_testes(u32 tamanho, u32 alvo_index, u16 n_testes,
 
         LINE(50);
     }
-    printf(">[%d] Testes finalizados.\n", n_testes);
+    printf("> [%d] Testes finalizados.\n", n_testes);
 
     free(vetor);
 }
@@ -115,15 +117,16 @@ int main(int argc, char **argv) {
 
     srand(time(NULL));
 
-    tamanho = get_input("Tamanho:\n>> ", 100000);
+    tamanho = get_input("Tamanho (100000):\n>> ", 100000);
     if (tamanho == 0)
         tamanho = 100000;
 
-    alvo_index = get_input("Indice do alvo:\n>> ", rand() % tamanho);
+    alvo_index =
+        get_input("Indice do alvo (rand () % tamanho):\n>> ", rand() % tamanho);
     if (alvo_index >= tamanho)
         alvo_index = tamanho - 1;
 
-    testes = get_input("Numero de testes:\n>> ", 4);
+    testes = get_input("Numero de testes: (4)\n>> ", 4);
 
     exec_testes(tamanho, alvo_index, testes, true);
     create_csv("medidas_alg.csv", medidas);
