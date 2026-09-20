@@ -1,7 +1,7 @@
 TARGET = prog
-LIBS = -lm -lcurl
+LIBS = -lm
 CC = clang
-CFLAGS = -g -Wall -std=c99
+CFLAGS = -g -Wall -std=c99 -O
 
 .PHONY: default all clean
 

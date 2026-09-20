@@ -1,5 +1,13 @@
 #include "ordenacao.h"
 
+bool esta_ordenado(u32 *vetor, size_t tamanho) {
+    for (int i = 1; i < tamanho; i++) {
+        if (vetor[i] < vetor[i-1]) return false;
+    }
+
+    return true;
+}
+
 void selection_sort(u32 *vetor, size_t tamanho) {
     for (u32 i = 0; i < tamanho - 1; i++) {
         u32 min_i = i;

@@ -5,8 +5,8 @@
 
 extern void selection_sort(u32 *vetor, size_t tamanho);
 extern void insertion_sort(u32 *vetor, size_t tamanho);
-
 extern void quick_sort(u32 *vetor, size_t tamanho);
 
+extern bool esta_ordenado(u32 *vetor, size_t tamanho);
 
 #endif

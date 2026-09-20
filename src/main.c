@@ -63,6 +63,8 @@ static void exec_testes(u32 tamanho, u32 alvo_index, u16 n_testes,
 
     printf("Ordenando lista...\n");
     TEMPO_FUNC("Quick Sort", quick_sort(vetor, tamanho));
+    bool resultado_ord = esta_ordenado(vetor, tamanho);
+    printf("Resultado da ordenacao: %s\n", resultado_ord ? "SUCESSO" : "FALHA");
     u32 alvo = vetor[alvo_index];
     LINE(50);
     for (int i = 0; i < n_testes; i++) {
@@ -122,14 +124,17 @@ int main(int argc, char **argv) {
         tamanho = 100000;
 
     alvo_index =
-        get_input("Indice do alvo (rand () % tamanho):\n>> ", rand() % tamanho);
+        get_input("Indice do alvo apos ordenacao (rand () % tamanho):\n>> ", rand() % tamanho);
     if (alvo_index >= tamanho)
         alvo_index = tamanho - 1;
 
     testes = get_input("Numero de testes: (4)\n>> ", 4);
 
     exec_testes(tamanho, alvo_index, testes, true);
-    create_csv("medidas_alg.csv", medidas);
+    
+    char filename_buffer[64];
+    snprintf(filename_buffer, sizeof(filename_buffer), "%d-%d.csv", alvo_index, tamanho);
+    create_csv(filename_buffer, medidas);
 
     return 0;
 }
