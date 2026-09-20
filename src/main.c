@@ -141,10 +141,10 @@ int main(void) {
 
     char filename_buffer[64];
     if (alvo_ausente)
-        snprintf(filename_buffer, sizeof(filename_buffer), "ausente-%u.csv",
+        snprintf(filename_buffer, sizeof(filename_buffer), "./output/ausente-%u.csv",
                  tamanho);
     else
-        snprintf(filename_buffer, sizeof(filename_buffer), "%u-%u.csv",
+        snprintf(filename_buffer, sizeof(filename_buffer), "./output/%u-%u.csv",
                  alvo_index, tamanho);
 
     create_csv(filename_buffer, medidas);
