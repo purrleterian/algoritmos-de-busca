@@ -133,8 +133,11 @@ int main(int argc, char **argv) {
         get_input("Buscar chave INEXISTENTE? 0 = nao, 1 = sim (0)\n>> ", 0);
 
     testes = get_input("Numero de testes: (4)\n>> ", 4);
+    u32 max_testes = (MAX_TESTS - 1) / 2;
+    if (testes > max_testes)
+        testes = max_testes;
 
-    exec_testes(tamanho, alvo_index, testes, true, alvo_ausente);
+    exec_testes(tamanho, alvo_index, testes, alvo_ausente, true);
 
     char filename_buffer[64];
     if (alvo_ausente)
