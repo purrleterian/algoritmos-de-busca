@@ -32,7 +32,7 @@ static void create_csv(const char *filename, const Medida medidas[MAX_TESTS]) {
 
     fprintf(fp, "ID,NOME,TEMPO (SEG)\n");
     for (int i = 0; i < n_medidas; i++) {
-        fprintf(fp, "%d,%s,%.8f\n", medidas[i].count, medidas[i].label,
+        fprintf(fp, "%d,%s,%.10f\n", medidas[i].count, medidas[i].label,
                 medidas[i].tempo);
     }
 
@@ -41,18 +41,17 @@ static void create_csv(const char *filename, const Medida medidas[MAX_TESTS]) {
 }
 
 static void print_resultado(BuscaResultado r) {
-    bool successo = (r.pos != -1 && r.val != -1);
+    bool successo = (r.pos != (u32)-1);
     printf("Resultado da busca: %s\n", successo ? "SUCESSO" : "FALHA");
-    if (!successo) {
 
-        printf("\t| Alvo: [%d]\n", r.val);
-        printf("\t| Comparacoes: [%d]\n", r.n_comp);
-    } else {
-        printf("\t| Alvo: [%d]\n", r.val);
-        printf("\t| Posicao: [%d]\n", r.pos);
+    printf("\t| Alvo: [%u]\n", r.val);
+    if (successo) {
+
+        printf("\t| Posicao: [%u]\n", r.pos);
         printf("\t| Endereco: [%p]\n", r.ender);
-        printf("\t| Comparacoes: [%d]\n", r.n_comp);
     }
+
+    printf("\t| Comparacoes: [%u]\n", r.n_comp);
     printf("\n");
 }
 
@@ -75,8 +74,8 @@ static void exec_testes(u32 tamanho, u32 alvo_index, u16 n_testes,
         BuscaResultado resultado_linear;
 
         printf("Teste numero: (%d)\n", i + 1);
-        TEMPO_FUNC("Busca linear",
-                   resultado_linear = busca_linear(vetor, tamanho, alvo));
+        TEMPO_REP("Busca linear",
+                  resultado_linear = busca_linear(vetor, tamanho, alvo));
         print_resultado(resultado_linear);
     }
 
@@ -85,8 +84,8 @@ static void exec_testes(u32 tamanho, u32 alvo_index, u16 n_testes,
             print_vetor(vetor, tamanho, 10);
 
         BuscaResultado resultado_binario;
-        TEMPO_FUNC("Busca Binaria",
-                   resultado_binario = busca_binaria(vetor, tamanho, alvo));
+        TEMPO_REP("Busca Binaria",
+                  resultado_binario = busca_binaria(vetor, tamanho, alvo));
         print_resultado(resultado_binario);
 
         LINE(50);
@@ -124,16 +123,18 @@ int main(int argc, char **argv) {
         tamanho = 100000;
 
     alvo_index =
-        get_input("Indice do alvo apos ordenacao (rand () % tamanho):\n>> ", rand() % tamanho);
+        get_input("Indice do alvo apos ordenacao (rand () % tamanho):\n>> ",
+                  rand() % tamanho);
     if (alvo_index >= tamanho)
         alvo_index = tamanho - 1;
 
     testes = get_input("Numero de testes: (4)\n>> ", 4);
 
     exec_testes(tamanho, alvo_index, testes, true);
-    
+
     char filename_buffer[64];
-    snprintf(filename_buffer, sizeof(filename_buffer), "%d-%d.csv", alvo_index, tamanho);
+    snprintf(filename_buffer, sizeof(filename_buffer), "%d-%d.csv", alvo_index,
+             tamanho);
     create_csv(filename_buffer, medidas);
 
     return 0;

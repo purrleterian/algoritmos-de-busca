@@ -46,6 +46,27 @@ typedef struct {
         printf("Tempo para executar~\n[%s]:\n->%.8f (seg)\n\n", #func, tempo); \
     } while (0)
 
+
+#define REPETICOES 10000
+
+#define TEMPO_REP(label_, func)                                                \
+    do {                                                                       \
+        clock_t inicio = clock();                                              \
+        for (int rep_ = 0; rep_ < REPETICOES; rep_++) {                        \
+            func;                                                              \
+        }                                                                      \
+        clock_t fim = clock();                                                 \
+        double total = (double)(fim - inicio) / CLOCKS_PER_SEC;                \
+        double tempo = total / REPETICOES;                                     \
+        medidas[n_medidas].label = label_;                                     \
+        medidas[n_medidas].func_nome = #func;                                  \
+        medidas[n_medidas].tempo = tempo;                                      \
+        medidas[n_medidas].count = n_medidas;                                  \
+        n_medidas++;                                                           \
+        printf("Tempo medio por busca [%s]:\n->%.10f (seg) | R=%d | total=%.6f (seg)\n\n", \
+               #func, tempo, REPETICOES, total);                               \
+    } while (0)
+
 #define LINE(n)                                                                \
     for (int i = 0; i < n; i++) {                                              \
         printf("-");                                                           \
@@ -57,6 +78,7 @@ typedef struct {
     u32 val;
     u32 *ender;
     u32 n_comp;
+    u32 alvo;
 } BuscaResultado;
 
 #endif
