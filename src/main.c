@@ -44,7 +44,7 @@ static void print_resultado(BuscaResultado r) {
     bool successo = (r.pos != (u32)-1);
     printf("Resultado da busca: %s\n", successo ? "SUCESSO" : "FALHA");
 
-    printf("\t| Alvo: [%u]\n", r.val);
+    printf("\t| Alvo: [%u]\n", r.alvo);
     if (successo) {
 
         printf("\t| Posicao: [%u]\n", r.pos);
@@ -56,7 +56,7 @@ static void print_resultado(BuscaResultado r) {
 }
 
 static void exec_testes(u32 tamanho, u32 alvo_index, u16 n_testes,
-                        bool print_v) {
+                        bool alvo_ausente, bool print_v) {
     u32 *vetor;
     vetor = criar_vetor_aleatorio(tamanho);
 
@@ -64,7 +64,8 @@ static void exec_testes(u32 tamanho, u32 alvo_index, u16 n_testes,
     TEMPO_FUNC("Quick Sort", quick_sort(vetor, tamanho));
     bool resultado_ord = esta_ordenado(vetor, tamanho);
     printf("Resultado da ordenacao: %s\n", resultado_ord ? "SUCESSO" : "FALHA");
-    u32 alvo = vetor[alvo_index];
+    u32 alvo = alvo_ausente ? (u32)RAND_MAX + 1 : vetor[alvo_index];
+
     LINE(50);
     for (int i = 0; i < n_testes; i++) {
 
@@ -114,7 +115,7 @@ static u32 get_input(char *prompt, u32 def) {
 }
 
 int main(int argc, char **argv) {
-    u32 testes, alvo_index, tamanho;
+    u32 testes, alvo_index, tamanho, alvo_ausente;
 
     srand(time(NULL));
 
@@ -128,13 +129,21 @@ int main(int argc, char **argv) {
     if (alvo_index >= tamanho)
         alvo_index = tamanho - 1;
 
+    alvo_ausente =
+        get_input("Buscar chave INEXISTENTE? 0 = nao, 1 = sim (0)\n>> ", 0);
+
     testes = get_input("Numero de testes: (4)\n>> ", 4);
 
-    exec_testes(tamanho, alvo_index, testes, true);
+    exec_testes(tamanho, alvo_index, testes, true, alvo_ausente);
 
     char filename_buffer[64];
-    snprintf(filename_buffer, sizeof(filename_buffer), "%d-%d.csv", alvo_index,
-             tamanho);
+    if (alvo_ausente)
+        snprintf(filename_buffer, sizeof(filename_buffer), "ausente-%u.csv",
+                 tamanho);
+    else
+        snprintf(filename_buffer, sizeof(filename_buffer), "%u-%u.csv",
+                 alvo_index, tamanho);
+
     create_csv(filename_buffer, medidas);
 
     return 0;

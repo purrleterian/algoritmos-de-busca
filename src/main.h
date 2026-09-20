@@ -29,7 +29,7 @@ typedef struct {
     u16 count;
 } Medida;
 
-#define MAX_TESTS 128
+#define MAX_TESTS 256
 
 
 #define TEMPO_FUNC(label_, func)                                               \
