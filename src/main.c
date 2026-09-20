@@ -114,7 +114,7 @@ static u32 get_input(char *prompt, u32 def) {
     return v;
 }
 
-int main(int argc, char **argv) {
+int main(void) {
     u32 testes, alvo_index, tamanho, alvo_ausente;
 
     srand(time(NULL));

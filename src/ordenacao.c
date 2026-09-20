@@ -1,7 +1,7 @@
 #include "ordenacao.h"
 
 bool esta_ordenado(u32 *vetor, size_t tamanho) {
-    for (int i = 1; i < tamanho; i++) {
+    for (size_t i = 1; i < tamanho; i++) {
         if (vetor[i] < vetor[i-1]) return false;
     }
 
