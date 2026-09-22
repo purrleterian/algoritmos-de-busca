@@ -5,8 +5,8 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #include <string.h>
+#include <time.h>
 
 typedef int8_t i8;
 typedef int16_t i16;
@@ -21,9 +21,10 @@ typedef float f32;
 typedef double f64;
 
 #define RAND_SEED 107
+#define MAX_LABEL 64
 
 typedef struct {
-    const char *label;
+    char label[MAX_LABEL];
     const char *func_nome;
     double tempo;
     u16 count;
@@ -31,21 +32,19 @@ typedef struct {
 
 #define MAX_TESTS 256
 
-
 #define TEMPO_FUNC(label_, func)                                               \
     do {                                                                       \
         clock_t inicio = clock();                                              \
         func;                                                                  \
         clock_t fim = clock();                                                 \
         double tempo = (double)(fim - inicio) / CLOCKS_PER_SEC;                \
-        medidas[n_medidas].label = label_;                                     \
+        snprintf(medidas[n_medidas].label, MAX_LABEL, "%s", label_);           \
         medidas[n_medidas].func_nome = #func;                                  \
         medidas[n_medidas].tempo = tempo;                                      \
         medidas[n_medidas].count = n_medidas;                                  \
         n_medidas++;                                                           \
         printf("Tempo para executar~\n[%s]:\n->%.8f (seg)\n\n", #func, tempo); \
     } while (0)
-
 
 #define REPETICOES 10000
 
@@ -58,12 +57,13 @@ typedef struct {
         clock_t fim = clock();                                                 \
         double total = (double)(fim - inicio) / CLOCKS_PER_SEC;                \
         double tempo = total / REPETICOES;                                     \
-        medidas[n_medidas].label = label_;                                     \
+        snprintf(medidas[n_medidas].label, MAX_LABEL, "%s", label_);           \
         medidas[n_medidas].func_nome = #func;                                  \
         medidas[n_medidas].tempo = tempo;                                      \
         medidas[n_medidas].count = n_medidas;                                  \
         n_medidas++;                                                           \
-        printf("Tempo medio por busca [%s]:\n->%.10f (seg) | R=%d | total=%.6f (seg)\n\n", \
+        printf("Tempo medio por busca [%s]:\n->%.10f (seg) | R=%d | "          \
+               "total=%.6f (seg)\n\n",                                         \
                #func, tempo, REPETICOES, total);                               \
     } while (0)
 

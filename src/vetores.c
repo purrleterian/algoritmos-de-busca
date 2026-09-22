@@ -19,7 +19,7 @@ void print_vetor(u32 *valores, u32 tamanho, u32 display_t) {
     for (u32 i = 0; i < tamanho; i++) {
         printf("(%d) %d\n", i, valores[i]);
         if (i == display_t) {
-            printf("[...]\n");
+            printf("[... %u]\n", tamanho);
             break;
         }
     }

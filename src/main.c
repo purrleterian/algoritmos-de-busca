@@ -58,7 +58,12 @@ static void print_resultado(BuscaResultado r) {
 static void exec_testes(u32 tamanho, u32 alvo_index, u16 n_testes,
                         bool alvo_ausente, bool print_v) {
     u32 *vetor;
-    vetor = criar_vetor_aleatorio(tamanho);
+    char tamanho_vetor_buffer[64];
+    snprintf(tamanho_vetor_buffer, sizeof(tamanho_vetor_buffer),
+             "Criar vetor <%u>", tamanho);
+
+    TEMPO_FUNC(tamanho_vetor_buffer, vetor = criar_vetor_aleatorio(tamanho));
+    printf("%s\n", tamanho_vetor_buffer);
 
     printf("Ordenando lista...\n");
     TEMPO_FUNC("Quick Sort", quick_sort(vetor, tamanho));
@@ -85,7 +90,7 @@ static void exec_testes(u32 tamanho, u32 alvo_index, u16 n_testes,
             print_vetor(vetor, tamanho, 10);
 
         BuscaResultado resultado_binario;
-        
+
         printf("Teste numero: (%d)\n", i + 1);
         TEMPO_REP("Busca Binaria",
                   resultado_binario = busca_binaria(vetor, tamanho, alvo));
@@ -143,8 +148,8 @@ int main(void) {
 
     char filename_buffer[64];
     if (alvo_ausente)
-        snprintf(filename_buffer, sizeof(filename_buffer), "./output/ausente-%u.csv",
-                 tamanho);
+        snprintf(filename_buffer, sizeof(filename_buffer),
+                 "./output/ausente-%u.csv", tamanho);
     else
         snprintf(filename_buffer, sizeof(filename_buffer), "./output/%u-%u.csv",
                  alvo_index, tamanho);
