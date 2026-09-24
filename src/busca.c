@@ -3,6 +3,7 @@
 
 
 BuscaResultado busca_linear(u32 *vetor, size_t tamanho, u32 alvo) {
+    // atribuindo valores padroes
     BuscaResultado br = {.pos = -1, .val = -1, .ender = NULL, .n_comp=0, .alvo=alvo};
 
     for (size_t i = 0; i < tamanho; i++) {

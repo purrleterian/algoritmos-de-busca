@@ -23,6 +23,17 @@ static int n_medidas = 0;
 
 // TODO: REFACTOR structure, new file
 
+static void evidencia_ord(const char *filename, u32 *vetor, size_t tamanho) {
+    FILE *fp = fopen(filename, "w");
+
+    for (int i = 0; i < tamanho; i++) {
+        fprintf(fp, "%d, %u\n", i, vetor[i]);
+    }
+
+    printf("Evidencia de ordenacao criada\n");
+    fclose(fp);
+}
+
 static void create_csv(const char *filename, const Medida medidas[MAX_TESTS]) {
     FILE *fp = fopen(filename, "w");
     if (fp == NULL) {
@@ -62,6 +73,7 @@ static void exec_testes(u32 tamanho, u32 alvo_index, u16 n_testes,
     snprintf(tamanho_vetor_buffer, sizeof(tamanho_vetor_buffer),
              "Criar vetor <%u>", tamanho);
 
+    // eu criei os Macros TEMPO_FUNC e TEMPO_REP para auxiliar no calculo de eficiencia de tempo
     TEMPO_FUNC(tamanho_vetor_buffer, vetor = criar_vetor_aleatorio(tamanho));
     printf("%s\n", tamanho_vetor_buffer);
 
@@ -89,6 +101,7 @@ static void exec_testes(u32 tamanho, u32 alvo_index, u16 n_testes,
         if (print_v)
             print_vetor(vetor, tamanho, 10);
 
+        // busca resultado e o output das funcoes de busca para conseguir armazenar multiplas informacoes referentes a busca
         BuscaResultado resultado_binario;
 
         printf("Teste numero: (%d)\n", i + 1);
@@ -100,6 +113,12 @@ static void exec_testes(u32 tamanho, u32 alvo_index, u16 n_testes,
     }
     printf("> [%d] Testes finalizados.\n", n_testes);
 
+    char evid_filename_buffer[64];
+    snprintf(evid_filename_buffer, sizeof(evid_filename_buffer), "evidencia_ord_%u.csv",
+             tamanho);
+
+
+    evidencia_ord(evid_filename_buffer, vetor, tamanho);
     free(vetor);
 }
 

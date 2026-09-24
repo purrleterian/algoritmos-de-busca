@@ -4,6 +4,7 @@ u32 *criar_vetor_aleatorio(u32 tamanho) {
     srand(RAND_SEED);
 
     u32 *v = malloc(sizeof(u32) * tamanho);
+    // verificacao de erro
     if (v == NULL) {
         fprintf(stderr, "Erro criando vetor\n");
         exit(1);
